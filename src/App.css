@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+
+body {
+  font-family: "Jost", serif;
+}
+
+.cursor-zoom-in {
+  cursor: zoom-in;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M14 14H8v4h6v6h4v-6h6v-4h-6V8h-4v6z' fill='%23ffffff' stroke='%23000000' stroke-width='2'/%3E%3C/svg%3E")
+      16 16,
+    zoom-in;
+}
+
+.product-title,
+.product-detail {
+  margin-bottom: 6px;
+}
+
+.wp-btn:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.product-description-div ul {
+  /* margin-top: 1rem; */
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+.product-description-div p:has(strong){
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+@media (min-width: 1280px) {
+  .container {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body,
+  html {
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 640px) {
+  .card-detail {
+    padding: 1rem;
+  }
+}
+
+.enquire-btn:hover {
+  border: 1px solid #d1af5d;
+  background-color: #0000;
+  color: #000;
+}
