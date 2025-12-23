@@ -8,7 +8,7 @@ export default function Footer() {
     <>
       <footer className="border-t mt-6 md:mt-8 lg:mt-16 bg-white pt-12">
         {/* ✅ CONTAINER ADDED */}
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="custom-container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* About Us */}
             <div className="space-y-4">
@@ -104,7 +104,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="w-full py-4 bg-gray-100 mt-12">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="custom-container">
           <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600">
             <p>&copy; {currentYear} Siva Fashion. All Rights Reserved.</p>
             <p className="mt-2 sm:mt-0">

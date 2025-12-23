@@ -24,30 +24,31 @@ import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 
+/* ---------------- Schema ---------------- */
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email"),
   phone: z.string().min(10, "Please enter a valid phone number"),
   productName: z.string().min(1, "Product name is required"),
   productCode: z.string().min(1, "Product code is required"),
-  quantity: z.number().min(1, "Quantity must be at least 1"),
+  brokerReference: z.string().optional(),
   message: z.string().optional(),
 });
 
+/* ---------------- Props ---------------- */
 interface EnquiryFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   productName: string;
   productCode: string;
-  quantity: number;
 }
 
+/* ---------------- Component ---------------- */
 export function EnquiryForm({
   open,
   onOpenChange,
   productName,
   productCode,
-  quantity,
 }: EnquiryFormProps) {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
@@ -59,9 +60,9 @@ export function EnquiryForm({
       name: "",
       email: "",
       phone: "",
-      productName: productName,
-      productCode: productCode,
-      quantity,
+      productName,
+      productCode,
+      brokerReference: "",
       message: "",
     },
   });
@@ -88,9 +89,13 @@ export function EnquiryForm({
   function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
     formData.append("method", "PostEnquiry");
+
     Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value.toString());
+      if (value !== undefined) {
+        formData.append(key, value.toString());
+      }
     });
+
     mutation.mutate(formData);
   }
 
@@ -100,6 +105,7 @@ export function EnquiryForm({
         <DialogHeader>
           <DialogTitle>Product Enquiry</DialogTitle>
         </DialogHeader>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -116,6 +122,7 @@ export function EnquiryForm({
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="email"
@@ -129,6 +136,7 @@ export function EnquiryForm({
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="phone"
@@ -142,6 +150,7 @@ export function EnquiryForm({
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="productName"
@@ -149,12 +158,13 @@ export function EnquiryForm({
                   <FormItem>
                     <FormLabel>Product Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Product name" {...field} />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="productCode"
@@ -162,31 +172,28 @@ export function EnquiryForm({
                   <FormItem>
                     <FormLabel>Product Code</FormLabel>
                     <FormControl>
-                      <Input placeholder="Product code" {...field} />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
-                name="quantity"
+                name="brokerReference"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Quantity</FormLabel>
+                    <FormLabel>Broker Reference (Optional)</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Quantity"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
+                      <Input placeholder="Broker reference" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+
             <FormField
               control={form.control}
               name="message"
@@ -200,6 +207,7 @@ export function EnquiryForm({
                 </FormItem>
               )}
             />
+
             {submitStatus === "success" && (
               <Alert className="bg-green-100 border-green-500 text-green-800">
                 <AlertTitle>Success!</AlertTitle>
@@ -208,6 +216,7 @@ export function EnquiryForm({
                 </AlertDescription>
               </Alert>
             )}
+
             {submitStatus === "error" && (
               <Alert className="bg-red-100 border-red-500 text-red-800">
                 <AlertTitle>Error!</AlertTitle>
@@ -216,6 +225,7 @@ export function EnquiryForm({
                 </AlertDescription>
               </Alert>
             )}
+
             <Button
               type="submit"
               className="w-full"

@@ -56,7 +56,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 h-[85px] w-full border-b bg-white shadow-md">
       {/* ✅ CONTAINER ADDED HERE */}
-      <div className="max-w-6xl mx-auto px-4 md:px-6 h-full">
+      <div className="custom-container h-full">
         <div className="flex items-center h-full">
           {/* Logo */}
           <div className="flex-1 relative h-full">

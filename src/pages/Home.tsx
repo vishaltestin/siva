@@ -20,33 +20,90 @@ const banners = [
 const collections = [
   {
     id: 1,
-    title: "Rasa Luxe",
-    image:
-      "https://www.sivafashions.com/wp-content/uploads/2022/12/anarkali.jpg",
+    title: "RASA LUXE",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/anarkali.jpg",
     slug: "rasa-luxe",
   },
   {
     id: 2,
-    title: "Vrindas",
-    image:
-      "https://www.sivafashions.com/wp-content/uploads/2022/12/drape-saree.jpg",
-    slug: "vrindas",
+    title: "RADHYA",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/drape-saree.jpg",
+    slug: "radhya",
   },
   {
     id: 3,
-    title: "Shyama Sundari",
-    image:
-      "https://www.sivafashions.com/wp-content/uploads/2022/12/Gowns.jpg",
-    slug: "shyama-sundari",
+    title: "VRINDAS",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/Gowns.jpg",
+    slug: "vrindas",
   },
   {
     id: 4,
-    title: "Ladli",
-    image:
-      "https://www.sivafashions.com/wp-content/uploads/2022/12/lehenga.jpg",
+    title: "SHYAMA SUNDARI",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/lehenga.jpg",
+    slug: "shyama-sundari",
+  },
+  {
+    id: 5,
+    title: "NITYA",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/anarkali.jpg",
+    slug: "nitya",
+  },
+  {
+    id: 6,
+    title: "GOPIKAS",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/drape-saree.jpg",
+    slug: "gopikas",
+  },
+  {
+    id: 7,
+    title: "NEEL RANGA",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/Gowns.jpg",
+    slug: "neel-ranga",
+  },
+  {
+    id: 8,
+    title: "KESHAV EDIT",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/lehenga.jpg",
+    slug: "keshav-edit",
+  },
+  {
+    id: 9,
+    title: "KANHA",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/anarkali.jpg",
+    slug: "kanha",
+  },
+  {
+    id: 10,
+    title: "LADLI",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/drape-saree.jpg",
     slug: "ladli",
   },
+  {
+    id: 11,
+    title: "MORPANKH",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/Gowns.jpg",
+    slug: "morpankh",
+  },
+  {
+    id: 12,
+    title: "BANSURI",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/lehenga.jpg",
+    slug: "bansuri",
+  },
+  {
+    id: 13,
+    title: "LAXMI",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/anarkali.jpg",
+    slug: "laxmi",
+  },
+  {
+    id: 14,
+    title: "VRAJE",
+    image: "https://www.sivafashions.com/wp-content/uploads/2022/12/drape-saree.jpg",
+    slug: "vraje",
+  },
 ];
+
 
 const normalize = (value: string) =>
   value.toLowerCase().replace(/\s+/g, "-");
@@ -96,7 +153,7 @@ export default function Home() {
 
       {/* ================= Collections (BOXED) ================= */}
       <section className="w-full bg-slate-50 py-16">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="custom-container">
           <div className="mb-10 text-center">
             <h2 className="text-xl md:text-3xl font-bold">
               Featured Collections

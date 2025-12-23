@@ -82,7 +82,7 @@ function DetailPage() {
 
                 {/* Boxed container */}
                 <div className="relative z-10 h-full">
-                    <div className="max-w-6xl mx-auto px-4 md:px-6 h-full flex flex-col justify-center text-white">
+                    <div className="custom-container h-full flex flex-col justify-center text-white">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
                             Vrindas
                         </h1>
@@ -99,7 +99,7 @@ function DetailPage() {
                 {/* Light background to separate section */}
                 <div className="w-full bg-slate-50 py-12">
                     {/* Centered big container */}
-                    <div className="max-w-6xl mx-auto px-4 md:px-6">
+                    <div className="custom-container">
                         <div className="space-y-12">
                             {products.map((product) => (
                                 <ProductDetail key={product.id} {...product} />
@@ -113,7 +113,7 @@ function DetailPage() {
                 {/* Outer fluid background */}
                 <div className="w-full bg-slate-50 py-12">
                     {/* Inner boxed container */}
-                    <div className="max-w-6xl mx-auto px-4 md:px-6">
+                    <div className="custom-container">
                         <div className="mb-10 text-center">
                             <h2 className="text-2xl font-semibold">Related Products</h2>
                             <p className="text-muted-foreground mt-1">

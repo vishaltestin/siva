@@ -5,13 +5,12 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { ArrowLeft, ClipboardList, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 
 const loginSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    broker: z.string().min(3, "Broker reference is required"),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -112,29 +111,6 @@ export default function Login() {
                             {errors.password && (
                                 <p className="text-sm text-red-500">
                                     {errors.password.message}
-                                </p>
-                            )}
-                        </div>
-
-                        {/* Broker Reference */}
-                        <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-slate-700">
-                                Broker Reference
-                            </label>
-                            <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-[#d1af5d]">
-                                    <ClipboardList size={18} />
-                                </div>
-                                <input
-                                    type="text"
-                                    {...register("broker")}
-                                    className="block w-full pl-11 pr-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#d1af5d]/20 focus:border-[#d1af5d] outline-none"
-                                    placeholder="REF-XXXX"
-                                />
-                            </div>
-                            {errors.broker && (
-                                <p className="text-sm text-red-500">
-                                    {errors.broker.message}
                                 </p>
                             )}
                         </div>

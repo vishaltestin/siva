@@ -1,0 +1,21 @@
+TICKET ID: 2025-01-18-homepage-fixes
+FROM: Mohan
+DATE: 18 Jan 2025
+
+CHANGE REQUEST:
+1. Add more items on home page
+2. Fix Login redirection issue
+3. Remove quantity option
+4. Add container layout
+5. Restore price display
+
+AFFECTED AREA:
+- Home page
+- Popup flow
+- Product UI
+
+STATUS:
+DONE
+
+NOTES:
+Priority seems high – affects UI/UX

@@ -24,20 +24,20 @@ export default function ProductDetail({
   media,
   sizeOptions,
   moq,
+  wholesalePrice,
   deliveryTimeline,
   fabricDetails,
   embroideryDetails,
 }: ProductDetailProps) {
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
-  const [quantity, setQuantity] = useState(moq);
+  // const [quantity, setQuantity] = useState(moq);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [showEnquiryForm, setShowEnquiryForm] = useState(false);
 
   const handleWhatsAppEnquiry = () => {
     const message = encodeURIComponent(
       `Hi, I'm interested in ${name} (Code: ${code})
-Size: ${selectedSize.size}
-Quantity: ${quantity}`
+Size: ${selectedSize.size}`
     );
     window.open(`https://wa.me/919619521254?text=${message}`, "_blank");
   };
@@ -140,6 +140,7 @@ Quantity: ${quantity}`
 
           {/* MOQ & DELIVERY */}
           <div className="border-t pt-4 space-y-2 text-sm">
+            <p> <span className="font-medium">Wholesale Price:</span>{" "} ₹{wholesalePrice?.toLocaleString()} / piece </p>
             <p>
               <span className="font-medium">MOQ:</span> {moq} pieces
             </p>
@@ -167,7 +168,7 @@ Quantity: ${quantity}`
           </div>
 
           {/* QUANTITY */}
-          <div className="flex gap-4 items-center">
+          {/* <div className="flex gap-4 items-center">
             <span className="w-20 text-sm font-medium">Quantity:</span>
             <div className="flex items-center gap-2">
               <Button
@@ -188,7 +189,7 @@ Quantity: ${quantity}`
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
-          </div>
+          </div> */}
 
           {/* ACTIONS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -196,6 +197,9 @@ Quantity: ${quantity}`
               onClick={handleWhatsAppEnquiry}
               className="w-full h-[50px] bg-transparent border border-[#3af15d] text-black hover:bg-[#3af15d] hover:text-white"
             >
+
+              <img src="/images/whatsapp.png" alt="" className="max-h-full w-5"/>
+
               WhatsApp Enquiry
             </Button>
 
@@ -233,7 +237,7 @@ Quantity: ${quantity}`
         onOpenChange={setShowEnquiryForm}
         productName={name}
         productCode={code}
-        quantity={quantity}
+        // quantity={quantity}
       />
     </div>
   );

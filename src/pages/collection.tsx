@@ -113,7 +113,7 @@ export default function CollectionPage() {
 
                 {/* Boxed container */}
                 <div className="relative z-10 h-full">
-                    <div className="max-w-6xl mx-auto px-4 md:px-6 h-full flex flex-col justify-center text-white">
+                    <div className="custom-container h-full flex flex-col justify-center text-white">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
                             {collection.title}
                         </h1>
@@ -126,7 +126,7 @@ export default function CollectionPage() {
             </section>
             {/* ================= Product Grid ================= */}
             <section>
-                <div className="max-w-6xl mx-auto px-4 md:px-6">
+                <div className="custom-container">
                     <div className="mb-10">
                         <h2 className="text-xl md:text-2xl font-semibold">
                             Available Designs
