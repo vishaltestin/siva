@@ -115,7 +115,9 @@ export default function Home() {
 
   const handleCollectionClick = (slug: string) => {
     if (!user) {
-      navigate("/login");
+      navigate("/login", {
+        state: { from: `/shop/${slug}` },
+      });
       return;
     }
 
@@ -128,6 +130,7 @@ export default function Home() {
 
     navigate(`/shop/${slug}`);
   };
+
 
   return (
     <div>

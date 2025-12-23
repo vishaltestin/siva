@@ -1,0 +1,19 @@
+TICKET ID: 2025-01-18-login-redirect
+FROM: Mohan
+DATE: 18 Jan 2025
+
+CHANGE REQUEST:
+After successful login, redirect user to Collection page
+instead of Home page.
+
+CURRENT BEHAVIOR:
+User is redirected to Home page after login.
+
+EXPECTED BEHAVIOR:
+User should be redirected to Collection page.
+
+AFFECTED FILES:
+- home.tsx
+
+STATUS:
+DONE
