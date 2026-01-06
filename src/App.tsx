@@ -24,7 +24,7 @@ function App() {
 
             {/* Protected Collection */}
             <Route
-              path="/shop/:slug"
+              path="/shop/:categoryId"
               element={
                 <ProtectedCollection>
                   <CollectionPage />
@@ -32,7 +32,7 @@ function App() {
               }
             />
             <Route
-              path="/shop/:collectionSlug/:id"
+              path="/shop/:categoryId/:id"
               element={
                 <ProtectedCollection>
                   <ProductDetailPage />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ProductZoomImage } from "./product-zoom-image";
@@ -33,6 +33,7 @@ export default function ProductDetail({
   // const [quantity, setQuantity] = useState(moq);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [showEnquiryForm, setShowEnquiryForm] = useState(false);
+
 
   const handleWhatsAppEnquiry = () => {
     const message = encodeURIComponent(
@@ -198,7 +199,7 @@ Size: ${selectedSize.size}`
               className="w-full h-[50px] bg-transparent border border-[#3af15d] text-black hover:bg-[#3af15d] hover:text-white"
             >
 
-              <img src="/images/whatsapp.png" alt="" className="max-h-full w-5"/>
+              <img src="/images/whatsapp.png" alt="" className="max-h-full w-5" />
 
               WhatsApp Enquiry
             </Button>
@@ -237,7 +238,7 @@ Size: ${selectedSize.size}`
         onOpenChange={setShowEnquiryForm}
         productName={name}
         productCode={code}
-        // quantity={quantity}
+      // quantity={quantity}
       />
     </div>
   );

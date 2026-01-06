@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 type AuthUser = {
+    user_id: string;
     email: string;
-    collections: string[];
+    name: string;
 };
+
 
 type AuthContextType = {
     user: AuthUser | null;

@@ -1,93 +1,39 @@
 import { useParams, Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts, getCategory } from "@/api/api";
+import { BASE_URL } from "@/lib/constant";
+import { CollectionPageSkeleton } from "@/components/skeleton/collection-page-skeleton";
 
-const COLLECTIONS: Record<
-    string,
-    { title: string; description: string; banner: string }
-> = {
-    "rasa-luxe": {
-        title: "Rasa Luxe",
-        description:
-            "An exclusive luxury collection crafted with intricate detailing and timeless silhouettes.",
-        banner:
-            "https://www.sivafashions.com/wp-content/uploads/2024/03/breadcrumbs-woo.jpg",
-    },
-    vrindas: {
-        title: "Vrindas",
-        description:
-            "Inspired by devotion, elegance, and handcrafted artistry.",
-        banner:
-            "https://www.sivafashions.com/wp-content/uploads/2024/03/breadcrumbs-woo.jpg",
-    },
-    "shyama-sundari": {
-        title: "Shyama Sundari",
-        description:
-            "A celebration of traditional beauty blended with modern finesse.",
-        banner:
-            "https://www.sivafashions.com/wp-content/uploads/2024/03/breadcrumbs-woo.jpg",
-    },
-    ladli: {
-        title: "Ladli",
-        description:
-            "Festive silhouettes designed to make every moment special.",
-        banner:
-            "https://www.sivafashions.com/wp-content/uploads/2024/03/breadcrumbs-woo.jpg",
-    },
-};
-
-const MOCK_PRODUCTS = [
-    {
-        id: 1,
-        title: "Hand Embroidered Kurta Set",
-        price: "₹5,999",
-        image:
-            "https://www.sivafashions.com/wp-content/uploads/2022/12/anarkali.jpg",
-    },
-    {
-        id: 2,
-        title: "Designer Anarkali Suit",
-        price: "₹8,499",
-        image:
-            "https://www.sivafashions.com/wp-content/uploads/2022/12/drape-saree.jpg",
-    },
-    {
-        id: 3,
-        title: "Festive Lehenga Set",
-        price: "₹12,999",
-        image:
-            "https://www.sivafashions.com/wp-content/uploads/2022/12/Gowns.jpg",
-    },
-    {
-        id: 4,
-        title: "Classic Silk Saree",
-        price: "₹9,299",
-        image:
-            "https://www.sivafashions.com/wp-content/uploads/2022/12/lehenga.jpg",
-    },
-    {
-        id: 5,
-        title: "Designer Anarkali Suit",
-        price: "₹8,499",
-        image:
-            "https://www.sivafashions.com/wp-content/uploads/2022/11/cat-04.jpg",
-    },
-    {
-        id: 6,
-        title: "Festive Lehenga Set",
-        price: "₹12,999",
-        image:
-            "https://www.sivafashions.com/wp-content/uploads/2022/12/Gowns.jpg",
-    },
-];
 
 export default function CollectionPage() {
-    const { slug } = useParams<{ slug: string }>();
-    const collection = slug ? COLLECTIONS[slug] : null;
+    const { categoryId } = useParams<{ categoryId: string }>();
 
-    if (!collection) {
+    /* ---------------- Fetch Category ---------------- */
+    const { data: categoryData } = useQuery({
+        queryKey: ["categories"],
+        queryFn: getCategory,
+    });
+
+    const category = categoryData?.packages.find(
+        (c) => c.id === categoryId
+    );
+
+    /* ---------------- Fetch Products ---------------- */
+    const {
+        data: productsData,
+        isLoading,
+        isError,
+    } = useQuery({
+        queryKey: ["products", categoryId],
+        queryFn: () => getProducts(categoryId!),
+        enabled: !!categoryId,
+    });
+
+    if (!category) {
         return (
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-20 text-center">
+            <div className="max-w-6xl mx-auto px-4 py-20 text-center">
                 <h1 className="text-3xl font-bold">Collection Not Found</h1>
                 <p className="mt-2 text-muted-foreground">
                     This collection does not exist.
@@ -96,34 +42,50 @@ export default function CollectionPage() {
         );
     }
 
+    if (isLoading) {
+        return <CollectionPageSkeleton />;
+    }
+
+
+    if (isError) {
+        return (
+            <div className="custom-container py-20 text-center">
+                Failed to load products
+            </div>
+        );
+    }
+
+    const products = productsData?.packages ?? [];
+
     return (
         <div className="space-y-10 lg:space-y-16">
             {/* ================= Banner ================= */}
-
             <section className="relative h-[180px] sm:h-[200px] md:h-[230px] w-full">
-                {/* Background Image */}
                 <img
-                    src={collection.banner}
-                    alt={collection.title}
-                    className="absolute inset-0 h-full w-full object-cover object-[60%] md:object-left"
+                    src={
+                        category.category_image
+                            ? `${BASE_URL}/image/${category.category_image}`
+                            : "https://via.placeholder.com/1200x400"
+                    }
+                    alt={category.name}
+                    className="absolute inset-0 h-full w-full object-cover"
                 />
 
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-black/50" />
 
-                {/* Boxed container */}
                 <div className="relative z-10 h-full">
                     <div className="custom-container h-full flex flex-col justify-center text-white">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-                            {collection.title}
+                            {category.name}
                         </h1>
 
-                        <p className="mt-2 md:mt-4 text-sm sm:text-base text-white/90 max-w-[250px] sm:max-w-md md:max-w-2xl">
-                            {collection.description}
+                        <p className="mt-2 md:mt-4 text-sm sm:text-base text-white/90 max-w-2xl">
+                            {category.small_description}
                         </p>
                     </div>
                 </div>
             </section>
+
             {/* ================= Product Grid ================= */}
             <section>
                 <div className="custom-container">
@@ -136,41 +98,53 @@ export default function CollectionPage() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10">
-                        {MOCK_PRODUCTS.map((product) => (
-                            <Link key={product.id} to={`/shop/${slug}/${product.id}`}>
-                                <Card className="group overflow-hidden rounded-xl shadow-sm hover:shadow-xl transition-all">
-                                    <div className="relative h-[250px] md:h-[300px] overflow-hidden">
-                                        <img
-                                            src={product.image}
-                                            alt={product.title}
-                                            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
-                                        />
-                                    </div>
+                    {products.length === 0 ? (
+                        <p className="text-muted-foreground">
+                            No products available in this collection.
+                        </p>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                            {products.map((product) => (
+                                <Link
+                                    key={product.id}
+                                    to={`/shop/${categoryId}/${product.id}`}
+                                >
+                                    <Card className="group overflow-hidden rounded-xl shadow-sm hover:shadow-xl transition-all">
+                                        <div className="relative h-[250px] md:h-[300px] overflow-hidden">
+                                            <img
+                                                src={
+                                                    product.thumb_image
+                                                        ? `${BASE_URL}/image/${product.thumb_image}`
+                                                        : "https://via.placeholder.com/400x600"
+                                                }
+                                                alt={product.product_name}
+                                                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
+                                            />
+                                        </div>
 
-                                    <CardContent className="p-4">
-                                        <h3 className="font-semibold text-lg line-clamp-1">
-                                            {product.title}
-                                        </h3>
+                                        <CardContent className="p-4">
+                                            <h3 className="font-semibold text-lg line-clamp-1">
+                                                {product.product_name}
+                                            </h3>
 
-                                        <p className="text-[#d1af5d] font-bold mt-1">
-                                            {product.price}
-                                        </p>
+                                            <p className="text-muted-foreground text-sm line-clamp-2 mt-1">
+                                                {product.short_description}
+                                            </p>
 
-                                        <Button
-                                            variant="outline"
-                                            className="mt-4 w-full group-hover:bg-[#d1af5d] group-hover:text-black transition-all"
-                                        >
-                                            View Details
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            </Link>
-                        ))}
-                    </div>
+                                            <Button
+                                                variant="outline"
+                                                className="mt-4 w-full group-hover:bg-[#d1af5d] group-hover:text-black transition-all"
+                                            >
+                                                View Details
+                                            </Button>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
         </div>
     );
 }
-

@@ -8,6 +8,10 @@ import { useAuth } from "@/context/AuthContext";
 import { ArrowLeft, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "@/api/api";
+
+
 const loginSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
@@ -18,6 +22,9 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useAuth();
+    const loginMutation = useMutation({
+        mutationFn: loginUser,
+    });
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -26,7 +33,7 @@ export default function Login() {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm<LoginForm>({
         resolver: zodResolver(loginSchema),
     });
@@ -34,14 +41,24 @@ export default function Login() {
     const primaryColor = "#d1af5d";
 
     const onSubmit = async (data: LoginForm) => {
-        await new Promise((r) => setTimeout(r, 800));
+        try {
+            const response = await loginMutation.mutateAsync({
+                method: "PostLogin",
+                email: data.email,
+                password: data.password,
+            });
 
-        login({
-            email: data.email,
-            collections: ["rasa-luxe", "vrindas", "ladli"],
-        });
+            const user = response.packages[0];
 
-        navigate(from, { replace: true });
+            login({
+                user_id: user.user_id,
+                email: user.email,
+                name: user.name,
+            });
+            navigate(from, { replace: true });
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
     };
 
     const handleBack = () => {
@@ -116,14 +133,14 @@ export default function Login() {
                         </div>
 
 
-                        {/* Login Button */}
                         <Button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={loginMutation.isPending}
                             className="w-full bg-[#d1af5d] text-white hover:bg-[#c9a94f] h-12 font-bold text-lg"
                         >
-                            {isSubmitting ? "Verifying..." : "Login & Continue"}
+                            {loginMutation.isPending ? "Verifying..." : "Login & Continue"}
                         </Button>
+
 
                         {/* Back Button (below login) */}
                         <button
@@ -134,6 +151,11 @@ export default function Login() {
                             <ArrowLeft size={16} style={{ color: primaryColor }} />
                             <span className="text-sm font-medium">Back to Home</span>
                         </button>
+                        {loginMutation.isError && (
+                            <p className="text-sm text-red-500 text-center">
+                                Invalid email or password
+                            </p>
+                        )}
                     </form>
                 </div>
             </div>

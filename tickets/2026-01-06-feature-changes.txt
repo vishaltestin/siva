@@ -1,0 +1,64 @@
+TICKET ID: 2025-01-18-login-collection-flow
+FROM: Mohan
+DATE: 18 Jan 2025
+
+FEATURE:
+Protected Collection Access & Post-Login Redirect Flow
+
+BACKGROUND:
+Two main pages exist:
+1. Home Page – lists all available collections
+2. Collection Page – shows product listing for a selected collection
+
+Each collection may or may not be accessible to a user based on ownership.
+
+USER FLOW:
+
+1. Home Page (Public)
+- All collections are visible on the Home page.
+- User can click on any collection.
+
+2. Collection Click Behavior:
+- When a user clicks a collection:
+  - System checks if the user is logged in.
+
+3. If User is NOT Logged In:
+- User is redirected to the Login page.
+- The originally requested collection URL is stored using route state (`state.from`).
+
+4. Login Page:
+- User enters email and password.
+- On successful login:
+  - User is redirected back to the original collection URL
+    instead of the Home page.
+
+5. After Redirect (Protected Collection Logic):
+- `ProtectedCollection` component runs the following checks in order:
+  a. Authentication check
+  b. Collection existence check
+  c. User access validation
+
+6. Collection Validation Rules:
+- If the collection does not exist:
+  → Redirect to 404 page
+- If the collection exists but user does NOT have access:
+  → Redirect to "No Access" page or show access denied popup
+- If the collection exists and user has access:
+  → Navigate to Collection Product Listing page
+
+7. If User is Logged In and Clicks Collection:
+- Skip Login page
+- Directly validate access
+- Navigate to Collection Product Listing page if permitted
+
+PRODUCT DETAIL PAGE:
+- Product detail pages are accessible only through valid collection access.
+- Unauthorized users are blocked by collection-level protection.
+
+IMPLEMENTATION DETAILS:
+- Route protection handled by `ProtectedCollection` component
+- Login redirect handled via `useLocation().state.from`
+- Post-login navigation uses `navigate(from, { replace: true })`
+
+STATUS:
+DONE
