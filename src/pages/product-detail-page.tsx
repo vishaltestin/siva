@@ -7,6 +7,7 @@ import {
 } from "@/api/api";
 import { transformProductDetail } from "@/helper/transformProductDetail";
 import ProductDetail from "@/components/product-detail";
+import { ProductDetailLoader } from "@/components/skeleton/loader-product";
 
 export default function ProductDetailPage() {
     const { id } = useParams<{ id: string }>();
@@ -31,9 +32,7 @@ export default function ProductDetailPage() {
 
     if (isLoading) {
         return (
-            <div className="py-24 text-center text-muted-foreground">
-                Loading product…
-            </div>
+            <ProductDetailLoader />
         );
     }
 

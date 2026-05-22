@@ -9,28 +9,11 @@ import {
 } from "@/components/ui/sheet";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { getCategory } from "@/api/api";
+import { Category } from "@/@types/types";
 
 const navItems = [
-  {
-    name: "Shop",
-    href: "/",
-    children: [
-      "RASA LUXE",
-      "RADHYA",
-      "VRINDAS",
-      "SHYAMA SUNDARI",
-      "NITYA",
-      "GOPIKAS",
-      "NEEL RANGA",
-      "KESHAV EDIT",
-      "KANHA",
-      "LADLI",
-      "MORPANKH",
-      "BANSURI",
-      "LAXMI",
-      "VRAJE",
-    ],
-  },
   { name: "About Us", href: "/about" },
   { name: "Contact Us", href: "/contact" },
 ];
@@ -42,9 +25,18 @@ export function Header() {
   const { user, logout } = useAuth();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategory,
+    staleTime: 1000 * 60 * 5,
+  });
+
   const toggleDropdown = (name: string) => {
     setOpenDropdown((prev) => (prev === name ? null : name));
   };
+
+  const collections: Category[] = data?.packages ?? [];
+
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -72,49 +64,48 @@ export function Header() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex flex-1 items-center justify-end gap-6">
             {navItems.map((item) =>
-              item.children ? (
-                <div key={item.name} className="relative group">
-                  <Link
-                    to={item.href}
-                    className={`text-lg transition-colors hover:text-primary ${isActive(item.href)
-                      ? "text-[#d1af5d] font-semibold"
-                      : ""
-                      }`}
-                  >
-                    {item.name}
-                  </Link>
-
-                  {/* Dropdown */}
-                  <div className="absolute left-0 top-full mt-3 w-56 rounded-md border bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                    <ul className="py-2">
-                      {item.children.map((child) => (
-                        <li key={child}>
-                          <Link
-                            to={`/shop/${child
-                              .toLowerCase()
-                              .replace(/\s+/g, "-")}`}
-                            className="block px-4 py-2 text-sm hover:bg-gray-100 hover:text-[#d1af5d]"
-                          >
-                            {child}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`text-lg transition-colors hover:text-primary ${isActive(item.href)
-                    ? "text-[#d1af5d] font-semibold"
-                    : ""
-                    }`}
-                >
-                  {item.name}
-                </Link>
-              )
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`text-lg transition-colors hover:text-primary ${isActive(item.href)
+                  ? "text-[#d1af5d] font-semibold"
+                  : ""
+                  }`}
+              >
+                {item.name}
+              </Link>
             )}
+            <div className="relative group">
+              <Link
+                to="/"
+                className={`text-lg transition-colors hover:text-primary ${isActive("/") ? "text-[#d1af5d] font-semibold" : ""
+                  }`}
+              >
+                Shop
+              </Link>
+
+              <div className="absolute left-0 top-full mt-3 w-52 rounded-md border bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <ul className="py-2 max-h-[400px] overflow-y-auto">
+                  {isLoading ? (
+                    <li className="px-4 py-2 text-sm text-gray-400">
+                      Loading collections...
+                    </li>
+                  ) : (
+                    collections.map((collection) => (
+                      <li key={collection.id}>
+                        <Link
+                          to={`/shop/${collection.id}`}
+                          className="block px-4 py-2 text-sm hover:bg-gray-100 hover:text-[#d1af5d]"
+                        >
+                          {collection.name}
+                        </Link>
+                      </li>
+                    ))
+                  )}
+                </ul>
+              </div>
+            </div>
+
 
             {/* Phone */}
             <a className="flex items-center gap-2 hover:text-[#d1af5d]">
@@ -143,53 +134,53 @@ export function Header() {
 
               <div className="flex flex-col space-y-4 mt-10">
                 {navItems.map((item) =>
-                  item.children ? (
-                    <div key={item.name}>
-                      <button
-                        type="button"
-                        onClick={() => toggleDropdown(item.name)}
-                        className="flex w-full items-center justify-between font-semibold"
-                      >
-                        {item.name}
-                        <span
-                          className={`transition-transform ${openDropdown === item.name ? "rotate-45" : ""
-                            }`}
-                        >
-                          <Plus className="h-4 w-4" />
-                        </span>
-                      </button>
-
-                      <div
-                        className={`ml-4 space-y-2 transition-all ${openDropdown === item.name
-                          ? "max-h-[500px] opacity-100 py-4"
-                          : "max-h-0 opacity-0 overflow-hidden"
-                          }`}
-                      >
-                        {item.children.map((child) => (
-                          <Link
-                            key={child}
-                            to={`/shop/${child
-                              .toLowerCase()
-                              .replace(/\s+/g, "-")}`}
-                            onClick={() => setIsOpen(false)}
-                            className="block"
-                          >
-                            {child}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="font-medium"
-                    >
-                      {item.name}
-                    </Link>
-                  )
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="font-medium"
+                  >
+                    {item.name}
+                  </Link>
                 )}
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => toggleDropdown("Shop")}
+                    className="flex w-full items-center justify-between font-semibold"
+                  >
+                    Shop
+                    <span
+                      className={`transition-transform ${openDropdown === "Shop" ? "rotate-45" : ""
+                        }`}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </span>
+                  </button>
+
+                  <div
+                    className={`ml-4 space-y-2 transition-all ${openDropdown === "Shop"
+                      ? "max-h-[500px] opacity-100 py-4"
+                      : "max-h-0 opacity-0 overflow-hidden"
+                      }`}
+                  >
+                    {isLoading ? (
+                      <span className="text-sm text-gray-400">Loading...</span>
+                    ) : (
+                      collections.map((collection) => (
+                        <Link
+                          key={collection.id}
+                          to={`/shop/${collection.id}`}
+                          onClick={() => setIsOpen(false)}
+                          className="block text-sm"
+                        >
+                          {collection.name}
+                        </Link>
+                      ))
+                    )}
+                  </div>
+                </div>
 
                 {user ? (
                   <Button

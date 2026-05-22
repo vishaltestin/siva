@@ -1,56 +1,4 @@
-// import { ProductDetailProps } from "@/@types/product";
-// import { BASE_URL } from "@/lib/constant";
-
-// export function transformProductDetail(
-//     productRes: any,
-//     imageRes: any,
-//     priceRes: any
-// ): ProductDetailProps {
-//     const product = productRes?.packages?.[0];
-
-//     if (!product) {
-//         throw new Error("Product not found");
-//     }
-
-//     const media =
-//         imageRes?.Image?.length > 0
-//             ? imageRes.Image.map((img: any) => ({
-//                 type: "image",
-//                 src: `${BASE_URL}image/${img.pimg_simg}`,
-//             }))
-//             : [
-//                 {
-//                     type: "image",
-//                     src: "/images/placeholder.jpg",
-//                 },
-//             ];
-
-//     const sizeOptions =
-//         priceRes?.Price?.length > 0
-//             ? priceRes.Price.map((p: any) => ({
-//                 size: p.prs_size,
-//                 price: Number(p.prs_price),
-//             }))
-//             : [{ size: "M", price: 0 }];
-
-//     return {
-//         id: product.id,
-//         name: product.product_name,
-//         code: product.product_code,
-//         description: product.product_description,
-
-//         media,
-//         sizeOptions,
-
-//         // WHOLESALE / EXTRA INFO
-//         wholesalePrice: sizeOptions[0]?.price,
-//         moq: 10,
-//         deliveryTimeline: "15–20 working days",
-//         fabricDetails: product.fabric,
-//         embroideryDetails: product.work,
-//     };
-// }
-import { ProductDetailProps } from "@/@types/product";
+import { ApiImageFull, ApiPrice, ProductDetailProps } from "@/@types/product";
 import { BASE_URL } from "@/lib/constant";
 
 export function transformProductDetail(
@@ -77,7 +25,7 @@ export function transformProductDetail(
 
     // 2️⃣ Images coming from product image API
     if (imageRes?.Image?.length > 0) {
-        imageRes.Image.forEach((img: any) => {
+        imageRes.Image.forEach((img: ApiImageFull) => {
             if (img?.pimg_simg) {
                 mediaSet.add(`${BASE_URL}image/${img.pimg_simg}`);
             }
@@ -100,7 +48,7 @@ export function transformProductDetail(
 
     const sizeOptions =
         priceRes?.Price?.length > 0
-            ? priceRes.Price.map((p: any) => ({
+            ? priceRes.Price.map((p: ApiPrice) => ({
                 size: p.prs_size,
                 price: Number(p.prs_price),
             }))
@@ -111,7 +59,7 @@ export function transformProductDetail(
         name: product.product_name,
         code: product.product_code,
         description: product.product_description,
-
+        brochure: product.brochure,
         media,
         sizeOptions,
 

@@ -1,3 +1,27 @@
+export interface ApiPagination {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+}
+export interface ApiImage {
+    pimg_pid: string;
+    pimg_bimg: string;
+}
+export interface ApiImageFull extends ApiImage {
+    id: string;
+    pimg_title: string;
+    pimg_position: string;
+    pimg_desc: string;
+    pimg_simg: string;
+    status: string;
+    pimg_date: string;
+}
+export interface ApiPrice {
+    prs_pid: string;
+    prs_size: string;
+    prs_price: string;
+}
 export interface ApiProduct {
     id: string;
     product_name: string;
@@ -5,46 +29,6 @@ export interface ApiProduct {
     product_description: string;
     fabric?: string;
     work?: string;
-}
-
-export interface ApiImage {
-    pimg_pid: string;
-    pimg_bimg: string;
-}
-
-export interface ApiPrice {
-    prs_pid: string;
-    prs_size: string;
-    prs_price: string;
-}
-
-export interface ProductDetailProps {
-    id: string;
-    name: string;
-    code: string;
-    description: string;
-
-    media: {
-        type: "image" | "video";
-        src: string;
-    }[];
-
-    sizeOptions: {
-        size: string;
-        price: number;
-    }[];
-
-    wholesalePrice?: number;
-    moq?: number;
-    deliveryTimeline?: string;
-    fabricDetails?: string;
-    embroideryDetails?: string;
-}
-
-export interface ProductListFullResponse {
-    status: number;
-    message: string;
-    packages: ApiProductFull[];
 }
 export interface ApiProductFull {
     id: string;
@@ -81,16 +65,36 @@ export interface ApiProductFull {
     brochure: string;
     notes: string;
 
-    images: ApiImageFull[];
+    image: ApiImageFull | null;   // 👈 FIXED
     prices: ApiPrice[];
 }
-
-export interface ApiImageFull extends ApiImage {
-    id: string;
-    pimg_title: string;
-    pimg_position: string;
-    pimg_desc: string;
-    pimg_simg: string;
-    status: string;
-    pimg_date: string;
+export interface ProductListFullResponse {
+    status: number;
+    message: string;
+    packages: ApiProductFull[];
+    pagination: ApiPagination;   // 👈 ADDED
 }
+export interface ProductDetailProps {
+    id: string;
+    name: string;
+    code: string;
+    description: string;
+
+    media: {
+        type: "image" | "video";
+        src: string;
+    }[];
+
+    sizeOptions: {
+        size: string;
+        price: number;
+    }[];
+
+    wholesalePrice?: number;
+    moq?: number;
+    deliveryTimeline?: string;
+    fabricDetails?: string;
+    embroideryDetails?: string;
+    brochure?: string;
+}
+

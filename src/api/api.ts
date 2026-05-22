@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 
-import { GetCategoryResponse, LoginResponse, ProductsApiResponse } from "@/@types/types";
+import { GetCategoryResponse, LoginResponse } from "@/@types/types";
 import { BASE_API_URL } from "@/lib/constant";
 import { ProductListFullResponse } from "@/@types/product";
 
@@ -20,27 +20,29 @@ export async function getCategory(): Promise<GetCategoryResponse> {
     }
 }
 
-export async function getProducts(category_id: string): Promise<ProductsApiResponse> {
-    try {
-        const formData = new FormData();
-        formData.append("method", "getProduct");
-        formData.append("category_id", category_id);
-        const response = await axios.post<ProductsApiResponse>(
-            BASE_API_URL,
-            formData
-        );
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching Products:", error);
-        throw error;
-    }
-}
+// export async function getProducts(category_id: string): Promise<ProductsApiResponse> {
+//     try {
+//         const formData = new FormData();
+//         formData.append("method", "getProduct");
+//         formData.append("category_id", category_id);
+//         const response = await axios.post<ProductsApiResponse>(
+//             BASE_API_URL,
+//             formData
+//         );
+//         return response.data;
+//     } catch (error) {
+//         console.error("Error fetching Products:", error);
+//         throw error;
+//     }
+// }
 
-export async function getFullProducts(category_id: string): Promise<ProductListFullResponse> {
+export async function getFullProducts(category_id: string, page: number): Promise<ProductListFullResponse> {
     try {
         const formData = new FormData();
         formData.append("method", "getProductFullList");
         formData.append("category_id", category_id);
+        formData.append("page", page.toString());
+        formData.append("limit", "8");
         const response = await axios.post<ProductListFullResponse>(
             BASE_API_URL,
             formData

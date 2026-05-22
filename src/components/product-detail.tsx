@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +12,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ProductDetailProps } from "@/helper/getProducts";
+import { ProductDetailProps } from "@/@types/product";
+import { BASE_URL } from "@/lib/constant";
+import { Link } from "react-router-dom";
 
 export default function ProductDetail({
   id,
@@ -24,16 +24,14 @@ export default function ProductDetail({
   media,
   sizeOptions,
   moq,
-  wholesalePrice,
   deliveryTimeline,
   fabricDetails,
   embroideryDetails,
+  brochure,
 }: ProductDetailProps) {
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
-  // const [quantity, setQuantity] = useState(moq);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [showEnquiryForm, setShowEnquiryForm] = useState(false);
-
 
   const handleWhatsAppEnquiry = () => {
     const message = encodeURIComponent(
@@ -141,7 +139,10 @@ Size: ${selectedSize.size}`
 
           {/* MOQ & DELIVERY */}
           <div className="border-t pt-4 space-y-2 text-sm">
-            <p> <span className="font-medium">Wholesale Price:</span>{" "} ₹{wholesalePrice?.toLocaleString()} / piece </p>
+            <p>
+              <span className="font-medium">Wholesale Price:</span>{" "}
+              ₹{selectedSize.price.toLocaleString()} / piece
+            </p>
             <p>
               <span className="font-medium">MOQ:</span> {moq} pieces
             </p>
@@ -168,31 +169,6 @@ Size: ${selectedSize.size}`
             ))}
           </div>
 
-          {/* QUANTITY */}
-          {/* <div className="flex gap-4 items-center">
-            <span className="w-20 text-sm font-medium">Quantity:</span>
-            <div className="flex items-center gap-2">
-              <Button
-                size="icon"
-                variant="outline"
-                onClick={() =>
-                  setQuantity((q) => Math.max(moq, q - 1))
-                }
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <span className="w-12 text-center">{quantity}</span>
-              <Button
-                size="icon"
-                variant="outline"
-                onClick={() => setQuantity((q) => q + 1)}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-          </div> */}
-
-          {/* ACTIONS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Button
               onClick={handleWhatsAppEnquiry}
@@ -222,12 +198,12 @@ Size: ${selectedSize.size}`
     flex items-center justify-center gap-2
     font-medium
   "
-              onClick={() =>
-                window.open("/catalogs/vrindas-wholesale.pdf", "_blank")
-              }
+              asChild
             >
-              <Download className="h-4 w-4" />
-              Download Product Catalog (PDF)
+              <Link to={`${BASE_URL}image/${brochure}`} target="_blank">
+                <Download className="h-4 w-4" />
+                Download Product Catalog (PDF)
+              </Link>
             </Button>
           </div>
         </Card>
@@ -238,7 +214,6 @@ Size: ${selectedSize.size}`
         onOpenChange={setShowEnquiryForm}
         productName={name}
         productCode={code}
-      // quantity={quantity}
       />
     </div>
   );
