@@ -8,7 +8,7 @@ import ContactPage from "@/pages/contact";
 import Login from "@/pages/login";
 import NoAccess from "@/pages/no-access";
 import CollectionPage from "@/pages/collection";
-import ProtectedCollection from "@/components/protected-collection";
+// import ProtectedCollection from "@/components/protected-collection";
 import ProductDetailPage from "./pages/product-detail-page";
 
 function App() {
@@ -26,17 +26,17 @@ function App() {
             <Route
               path="/shop/:categoryId"
               element={
-                <ProtectedCollection>
+                // <ProtectedCollection>
                   <CollectionPage />
-                </ProtectedCollection>
+                // </ProtectedCollection>
               }
             />
             <Route
               path="/shop/:categoryId/:id"
               element={
-                <ProtectedCollection>
+                // <ProtectedCollection>
                   <ProductDetailPage />
-                </ProtectedCollection>
+                // </ProtectedCollection>
               }
             />
           </Route>
